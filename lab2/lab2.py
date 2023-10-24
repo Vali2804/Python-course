@@ -130,10 +130,12 @@ def pb9(matrix):
                 blocked_seats.append((row, col))
     return blocked_seats
 
-def pb10(*args):
-    # Use the zip function to combine elements from each list
-    combined = list(zip(*args))
-    return combined
+def pb10(*lists):
+    max_len = max(len(l) for l in lists)
+    result = []
+    for i in range(max_len):
+        result.append(tuple(l[i] if i < len(l) else None for l in lists))
+    return result
 
 def pb11(tuples):
     return sorted(tuples, key=lambda x: x[1][2])
@@ -228,7 +230,7 @@ def main():
         print("end pb9\n")
 
         print("pb10")
-        result = pb10([1,2,3], [5,6,7], ["a", "b", "c"])
+        result = pb10([1,2,3,4], [5,6,7], ["a", "b", "c"])
         print(result)
         print("end pb10\n")
 
