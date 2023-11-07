@@ -48,6 +48,7 @@ def main():
     m.set(2, 0, 7)
     m.set(2, 1, 8)
     m.set(2, 2, 9)
+    print("m[2][2] =",m.get(2, 2))
     print("matrix m")
     print(m.matrix)
     m.transform(lambda x: x + 1)
