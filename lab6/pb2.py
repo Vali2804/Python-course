@@ -1,6 +1,6 @@
 
 import os
-directory_path = "d:/an_3/python/Python/testing_lab6"
+directory_path = "testing_lab6"
 
 # check if the directory exists
 if not os.path.exists(directory_path):

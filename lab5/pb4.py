@@ -3,6 +3,9 @@ class Employee:
         self.name = name
         self.salary = salary
 
+    def get_name(self):
+        return self.name
+
     def get_salary(self):
         return self.salary
 
@@ -33,7 +36,7 @@ class Salesperson(Employee):
 def main():
     employees = [Manager("John", 1000, 100), Engineer("Mary", 1000, 5), Salesperson("Bob", 1000, 1000)]
     for employee in employees:
-        print(employee.get_salary())
+        print(employee.get_name(), employee.get_salary())
 
 if __name__ == "__main__":
     main()

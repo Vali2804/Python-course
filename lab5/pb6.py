@@ -60,11 +60,9 @@ class Magazine(LibraryItem):
         print(f"Issue Number: {self.issue_num}")
 
 def main():
-    library_items = [Book("The Great Gatsby", "F. Scott Fitzgerald", "1234", 200), DVD("The Godfather", "Francis Ford Coppola", "5678", 1972), Magazine("Time", "Time Inc.", "9101", 1)]
+    library_items = [Book("Fram Ursul Polar", "Cezar Petrescu", "1234", 150), DVD("Toate pînzele sus", "Mircea Mureșan", "5678", 1977), Magazine("Time", "Time Inc.", "9101", 1)]
     for library_item in library_items:
         library_item.display_info()
-        library_item.check_out()
-        library_item.return_item()
         library_item.check_out()
         library_item.return_item()
         print()

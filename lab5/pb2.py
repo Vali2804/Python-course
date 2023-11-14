@@ -39,6 +39,7 @@ def main():
         account.deposit(100)
         account.calculate_interest()
         print(account.balance)
-
+        account.withdraw(300)
+        print(account.balance)
 if __name__ == "__main__":
     main()

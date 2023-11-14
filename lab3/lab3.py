@@ -28,7 +28,7 @@ def pb3(dict1, dict2):
         
         # If the value is a dictionary, recursively compare the dictionaries
         if isinstance(value1, dict) and isinstance(value2, dict):
-            if not compare_dicts(value1, value2):
+            if not pb3(value1, value2):
                 return False
         # If the value is a list or set, convert to tuple and compare
         elif isinstance(value1, (list, set)) and isinstance(value2, (list, set)):
@@ -116,17 +116,17 @@ def main():
     print("end pb1\n")
 
     print("pb2")
-    text = "This is a test"
+    text = "Ana has apples."
     result = pb2(text)
     print(result)
     print("end pb2\n")
 
     print("pb3")
     dict1 = {"a": 1, "b": 2, "c": 3}
-    dict2 = {"a": 1, "b": 2, "c": 3}
-    dict3 = {"a": 1, "b": 2, "c": 4}
+    dict2 = {"a": [1,2,{"x" : 1}], "b": 2, "c": 4}
+    dict3 = {"a": [1,2,{"x" : 3}], "b": 2, "c": 4}
     print(pb3(dict1, dict2))
-    print(pb3(dict1, dict3))
+    print(pb3(dict2, dict3))
     print("end pb3\n")
 
     print("pb4")
@@ -150,7 +150,7 @@ def main():
 
     print("pb7")
     set1 = {1, 2, 3, 4, 5}
-    set2 = {3, 4, 5, 6, 7}
+    set2 = {1, 2, 3, 4, 5}
     result = pb7(set1, set2)
     print(result)
     print("end pb7\n")
