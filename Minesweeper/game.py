@@ -20,6 +20,8 @@ class Game():
         while running:
             clock.tick(60)
             self.time_now = pygame.time.get_ticks() // 1000
+
+            # Handle events
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     running = False
@@ -29,6 +31,8 @@ class Game():
                     self.handleMouseClick(pos, rightClick)
             self.draw()
             pygame.display.flip()
+
+            # Check the state of the game ( win or lose )
             if(self.time_now == self.timer and self.timer != 0):
                 self.board.setLost(True)
             if(self.board.getWon()):
@@ -39,7 +43,8 @@ class Game():
             if(self.board.getLost()):
                 sound = pygame.mixer.Sound("./Minesweeper/lost.mp3")
                 sound.play()
-                sleep(3)
+                self.drawLost()
+                sleep(5)
                 running = False
         pygame.quit()
 
@@ -75,6 +80,15 @@ class Game():
         pygame.draw.rect(self.screen, (0, 0, 0), (self.screen_size[0] - 200, self.screen_size[1] - 50, 175, 50))
         self.screen.blit(timer_text, (self.screen_size[0] - 275, self.screen_size[1] - 50))
 
+            
+    def drawLost(self):
+        for row in range(self.board.getSize()[0]):
+                for col in range(self.board.getSize()[1]):
+                    piece = self.board.getPiece(row, col)
+                    if(piece.getIsBomb()):
+                        image = self.getImage(piece)
+                        self.screen.blit(image, (col * self.piece_size[0], row * self.piece_size[1]))
+
     def loadImages(self):
         """
         Loads the images for the pieces.
@@ -82,7 +96,6 @@ class Game():
         Parameters:
             fileName (str): The name of the file.
             image (pygame.Surface): The image of the piece.
-
         """
         self.images = {}
         for fileName in os.listdir("Minesweeper/images"):
@@ -92,14 +105,34 @@ class Game():
                 self.images[fileName.split(".")[0]] = image
 
     def getImage(self, piece):
+        """
+        Returns the image of the piece.
+
+        Parameters:
+            string (str): The name of the image.
+            piece (Piece): The piece.
+
+        Returns:
+            pygame.Surface: The image of the piece.
+        """
         string = None
         if piece.getClicked():
             string = "bomb-at-clicked-block" if piece.getIsBomb() else str(piece.getNumAround())
         else:
             string = "flag" if piece.getFlagged() else "empty-block"
+            if piece.getIsBomb() and self.board.getLost():
+                string = "unclicked-bomb"
         return self.images[string]
     
     def handleMouseClick(self, pos, rightClick):
+        """
+        Handles the mouse click.
+
+        Parameters:
+            pos (tuple): The position of the mouse.
+            index (tuple): The index of the piece.
+            piece (Piece): The piece.
+        """
         if(self.board.getLost()):
             return
         index = (pos[1] // self.piece_size[1], pos[0] // self.piece_size[0])
