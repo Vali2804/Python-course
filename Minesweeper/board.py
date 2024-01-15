@@ -95,3 +95,6 @@ class Board():
     
     def getLost(self):
         return self.lost
+    
+    def setLost(self, lost):
+        self.lost = lost

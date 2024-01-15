@@ -3,10 +3,12 @@ import os
 from time import sleep
 
 class Game():
-    def __init__(self, board, screen_size):
+    def __init__(self, board, screen_size, timer):
         self.board = board
         self.screen_size = screen_size
-        self.piece_size = (self.screen_size[0] // self.board.size[0], self.screen_size[1] // self.board.size[1])
+        self.piece_size = (self.screen_size[0] // self.board.size[0], (self.screen_size[1] - 100) // self.board.size[1])
+        self.time_now = 0
+        self.timer = timer
         self.loadImages()
 
     def run(self):
@@ -17,6 +19,7 @@ class Game():
         running = True
         while running:
             clock.tick(60)
+            self.time_now = pygame.time.get_ticks() // 1000
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     running = False
@@ -26,6 +29,8 @@ class Game():
                     self.handleMouseClick(pos, rightClick)
             self.draw()
             pygame.display.flip()
+            if(self.time_now == self.timer and self.timer != 0):
+                self.board.setLost(True)
             if(self.board.getWon()):
                 sound = pygame.mixer.Sound("./Minesweeper/win.mp3")
                 sound.play()
@@ -58,6 +63,18 @@ class Game():
                 top_left = top_left[0] + self.piece_size[0],   top_left[1]
             top_left = 0, top_left[1] + self.piece_size[1]
 
+        # Timer
+        font = pygame.font.Font('freesansbold.ttf', 32)
+        timer_text = font.render(f"Time: {self.time_now}", True, (255, 255, 255))    
+        pygame.draw.rect(self.screen, (0, 0, 0), (10, self.screen_size[1] - 50, 150, 50))
+        self.screen.blit(timer_text, (10, self.screen_size[1] - 50))
+
+        # timer
+        font = pygame.font.Font('freesansbold.ttf', 32)
+        timer_text = font.render(f"Time Limit: {self.timer}", True, (255, 255, 255))
+        pygame.draw.rect(self.screen, (0, 0, 0), (self.screen_size[0] - 200, self.screen_size[1] - 50, 175, 50))
+        self.screen.blit(timer_text, (self.screen_size[0] - 275, self.screen_size[1] - 50))
+
     def loadImages(self):
         """
         Loads the images for the pieces.
@@ -88,3 +105,9 @@ class Game():
         index = (pos[1] // self.piece_size[1], pos[0] // self.piece_size[0])
         piece = self.board.getPiece(index[0], index[1])
         self.board.handleMouseClick(piece, rightClick)
+
+    def getTimeNow(self):
+        return self.time_now
+    
+    def getTimer(self):
+        return self.timer
